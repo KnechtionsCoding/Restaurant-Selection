@@ -1,0 +1,284 @@
+#include <iostream>
+#include <cmath>
+#include <cstdlib>
+#include <iomanip>
+#include <time.h>
+#include <vector>
+#include <string>
+#include <cstring>
+
+using namespace std;
+const int NOT_FOUND = -1;
+const int CHECK = 0;
+const int TEST = 2;
+
+void starting_restaurants(vector <string> &restaurants)
+{
+	restaurants.push_back("Arby's");
+	restaurants.push_back("Wendy's");
+	restaurants.push_back("Bob's Burgers");
+	restaurants.push_back("Olive Garden");
+	restaurants.push_back("Chick-Fil-a");
+	restaurants.push_back("McDonalds");
+	restaurants.push_back("Arctic Circle");
+	restaurants.push_back("Costa Vida");
+	
+}
+
+void start_tournament(vector <string> &restaurants, int &testing)
+{
+	
+	if (restaurants.size() % TEST == CHECK)
+	{
+		testing = 1;
+	}
+	else if (restaurants.size() % TEST != CHECK)
+	{
+		testing = 0;
+	}
+}
+
+void print_restaurant(vector<string> &restaurants)
+{
+	// uses iterator to print out the values
+	for (int i = 0; i < restaurants.size(); i++)
+	{
+		if (i == (restaurants.size() - 1))
+		{
+			cout << restaurants[i] << endl;
+		}
+		else
+		{
+			cout << restaurants[i] << ", ";
+		}
+		
+	}
+
+}
+
+int find_restaurant(vector<string> &restaurants, string name)
+{
+	for (int i = 0; i <restaurants.size(); i++)
+	{
+		if (restaurants[i] == name)
+		{
+			return i;
+		}
+	}
+	return NOT_FOUND;
+}
+
+void add_restaurant(vector<string> &restaurants)
+{
+	int index = 0;
+	string added_restaurant;
+	cout << "Please enter the name of the restaurant that you would like to add: " << endl;
+	cin >> added_restaurant;
+	index = find_restaurant(restaurants, added_restaurant);
+	if (index = NOT_FOUND)
+	{
+		restaurants.push_back(added_restaurant);
+		cout << added_restaurant <<" added. \n";
+	}
+	else
+	{
+		cout << added_restaurant << " already in the running.";
+	}
+	system("pause >null");
+}
+
+void del_restaurant(vector<string> &restaurants)
+{
+	int index = 0;
+	string del_restaurant;
+
+	cout << "Please enter the restaurant that you would like to delete: ";
+	cin >> del_restaurant;
+	index = find_restaurant(restaurants, del_restaurant);
+
+	if (index != NOT_FOUND)
+	{
+		restaurants.erase(restaurants.begin() + index);
+		cout << del_restaurant <<" deleted. \n";
+	}
+	else if (index == NOT_FOUND)
+	{
+		cout << add_restaurant << " not found.";
+	}
+	else
+	{
+		cout << "Error: FIX THE DELETE RESTAURANT FUNCTION!";
+	}
+	system("pause >null");
+	
+}
+
+void shuffle_restaurants(vector <string> &restaurants, bool &inform)
+{
+	const int SHUFFLE = 100;
+
+	for (int i = 0; i <= SHUFFLE; i++)
+	{
+		int random_location_one = rand() % restaurants.size();
+		int random_location_two = rand() % restaurants.size();
+
+		string restaurant1 = restaurants[random_location_one];
+		string restaurant2 = restaurants[random_location_two];
+
+		restaurants[random_location_two] = restaurant1;
+		restaurants[random_location_one] = restaurant2;
+	}
+	if (inform = true)
+	{
+		cout << "The restaurants have been shuffled \n";
+		system("pause >null");
+	}
+}
+
+void choose2(vector <string> &restaurants, bool &inform)
+{
+	shuffle_restaurants(restaurants,inform);
+	vector <string> top2;
+	cout << "Your choices are: \n";
+	for (int i = 0; i <= (restaurants.size()/2); i++)
+	{
+		string name;
+		int random_location_one = rand() % restaurants.size();
+		int random_location_two = rand() % restaurants.size();
+		cout << restaurants[random_location_two] << endl;
+		cout << restaurants[random_location_one] << endl;
+		system("pause>null");
+
+		cout << "Please select which restaurant wins: ";
+
+		cin >> name;
+		cin.sync();
+		getline(cin, name);
+
+		int index_find = find_restaurant(restaurants, name);
+
+		if (index_find >= 0)
+		{
+			top2.push_back(restaurants[index_find]);
+			restaurants.erase(restaurants.begin() + index_find);
+		}
+		else if (index_find < 0)
+		{
+			cout << "Error!";
+		}
+
+	}
+	cout << "The winner is: ";
+	print_restaurant(restaurants);
+	system("pause >null");
+}
+
+int get_menu(vector<string> &restaurants)
+{
+	bool inform = false;
+	int user_option = 0;
+	cout << "MENU" << endl;
+	cout << "Please select your option:" << endl;
+	cout << "1 - Display all restaurants" << endl;
+	cout << "2 - Add a restaurant" << endl;
+	cout << "3 - Remove a restaurant" << endl;
+	cout << "4 - Shuffle the vector" << endl;
+	cout << "5 - Begin the tournament" << endl;
+	cout << "6 - Quit the program" << endl;
+	cout << "Please enter your selection now: ";
+	cin >> user_option;
+
+	while (cin.fail())
+	{
+		cout << "INVALID SELECTION. Please select 1 - 6" << endl;
+		cin.clear();
+		cin.ignore(1000000, '\n');
+		system("pause");
+		system("cls");
+		user_option = get_menu(restaurants);
+	}
+
+	while (user_option > 6 || user_option < 1)
+
+	{
+		cout << "INVALID SELECTION. Please select 1 - 6" << endl;
+		system("cls");
+		user_option = get_menu(restaurants);
+	}
+
+
+	while (user_option >= 1 && user_option <= 5)
+	{
+
+		if (user_option == 1)
+		{
+			cout << "All Current Restaraunts: " << endl;
+			print_restaurant(restaurants);
+			system("pause > null");
+			system("cls");
+			user_option = get_menu(restaurants);
+		}
+
+		if (user_option == 2) //Option to add a restaurant
+
+		{
+			add_restaurant(restaurants);
+			system("cls");
+			user_option = get_menu(restaurants);
+		}
+
+
+		if (user_option == 3) //Option to delete a restaurant
+
+		{
+			del_restaurant(restaurants);
+			system("cls");
+			user_option = get_menu(restaurants);
+		}
+		if (user_option == 4) // shuffle the vetor
+		{
+			inform = true;
+			shuffle_restaurants(restaurants, inform);
+			system("cls");
+			user_option = get_menu(restaurants);
+		}
+		if (user_option == 5) // begin the tournament
+		{
+			const int start = 1;
+			const int dont_start = 0;
+			int testing = 0;
+			start_tournament(restaurants, testing);
+
+			if (testing == start)
+			{
+				choose2(restaurants, inform);
+			}
+			else if (testing == dont_start)
+			{
+				cout << "There is not a valid number of restaurants to start. Please make sure that there is an even number. Select Add Restaurants or Delete Restaurants to modify the number.";
+				system("pause > null");
+				system("cls");
+				user_option = get_menu(restaurants);
+			}
+			system("cls");
+			user_option = get_menu(restaurants);
+		}
+	}
+
+	if (user_option == 6)
+	{
+		cout << "GOODBYE" << endl;
+	}
+	return(user_option);
+
+}
+
+int main()
+{
+	srand(0);
+	vector<string> restaurants;
+	starting_restaurants(restaurants);
+	get_menu(restaurants);
+	return 0;
+
+}
