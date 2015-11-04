@@ -22,12 +22,12 @@ void starting_restaurants(vector <string> &restaurants)
 	restaurants.push_back("McDonalds");
 	restaurants.push_back("Arctic Circle");
 	restaurants.push_back("Costa Vida");
-	
+
 }
 
 void start_tournament(vector <string> &restaurants, int &testing)
 {
-	
+
 	if (restaurants.size() % TEST == CHECK)
 	{
 		testing = 1;
@@ -51,7 +51,7 @@ void print_restaurant(vector<string> &restaurants)
 		{
 			cout << restaurants[i] << ", ";
 		}
-		
+
 	}
 
 }
@@ -78,7 +78,7 @@ void add_restaurant(vector<string> &restaurants)
 	if (index = NOT_FOUND)
 	{
 		restaurants.push_back(added_restaurant);
-		cout << added_restaurant <<" added. \n";
+		cout << added_restaurant << " added. \n";
 	}
 	else
 	{
@@ -99,7 +99,7 @@ void del_restaurant(vector<string> &restaurants)
 	if (index != NOT_FOUND)
 	{
 		restaurants.erase(restaurants.begin() + index);
-		cout << del_restaurant <<" deleted. \n";
+		cout << del_restaurant << " deleted. \n";
 	}
 	else if (index == NOT_FOUND)
 	{
@@ -110,7 +110,7 @@ void del_restaurant(vector<string> &restaurants)
 		cout << "Error: FIX THE DELETE RESTAURANT FUNCTION!";
 	}
 	system("pause >null");
-	
+
 }
 
 void shuffle_restaurants(vector <string> &restaurants, bool &inform)
@@ -137,10 +137,10 @@ void shuffle_restaurants(vector <string> &restaurants, bool &inform)
 
 void choose2(vector <string> &restaurants, bool &inform)
 {
-	shuffle_restaurants(restaurants,inform);
+	shuffle_restaurants(restaurants, inform);
 	vector <string> top2;
 	cout << "Your choices are: \n";
-	for (int i = 0; i <= (restaurants.size()/2); i++)
+	for (int i = 0; i <= (restaurants.size() / 2); i++)
 	{
 		string name;
 		int random_location_one = rand() % restaurants.size();
@@ -151,8 +151,8 @@ void choose2(vector <string> &restaurants, bool &inform)
 
 		cout << "Please select which restaurant wins: ";
 
-		cin >> name;
-		cin.sync();
+		//cin >> name;
+		//cin.sync();
 		getline(cin, name);
 
 		int index_find = find_restaurant(restaurants, name);
@@ -162,9 +162,21 @@ void choose2(vector <string> &restaurants, bool &inform)
 			top2.push_back(restaurants[index_find]);
 			restaurants.erase(restaurants.begin() + index_find);
 		}
-		else if (index_find < 0)
+		while (index_find < 0)
 		{
-			cout << "Error!";
+			cout << "Error! Invalid Restaurant Name. Name not found. \n" << "Please select which restaurant wins: ";
+
+			//cin >> name;
+			//cin.sync();
+			getline(cin, name);
+
+			int index_find = find_restaurant(restaurants, name);
+
+			if (index_find >= 0)
+			{
+				top2.push_back(restaurants[index_find]);
+				restaurants.erase(restaurants.begin() + index_find);
+			}
 		}
 
 	}
